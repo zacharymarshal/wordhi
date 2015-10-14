@@ -25,7 +25,25 @@ class Tokenizer
         };
         $token_patterns = [
             "/^\s+/"                   => ['type' => 'whitespace', 'value_fn' => $returnMatches],
-            "/^<[^<]+?[\s]*\/?[\s]*>/" => ['type' => 'html-tag', 'value_fn' => $returnMatches],
+            "/^<[^<]+?[\s]*\/?[\s]*>/" => [
+                'type' => 'html-tag',
+                'value_fn' => function($matches, $string) {
+                    $matched = '';
+                    $open_quote = null;
+                    for ($i = 0; $i < strlen($string); $i++) {
+                        if ('>' === $string[$i] && null === $open_quote) {
+                            return $matched . $string[$i];
+                        } elseif (in_array($string[$i], ['"', "'"]) && null === $open_quote) {
+                            $open_quote = $string[$i];
+                        } elseif ($open_quote === $string[$i]) {
+                            $open_quote = null;
+                        }
+
+                        $matched .= $string[$i];
+                    }
+                    return $matched;
+                }
+            ],
             "/^&[^\s]*;/"              => ['type' => 'html-entity', 'value_fn' => $returnMatches],
             "/^[><\+\-!@#$%^&*();]/"   => ['type' => 'punctuation', 'value_fn' => $returnMatches],
             "/^\w+/"                   => ['type' => 'word', 'value_fn' => $returnMatches],
