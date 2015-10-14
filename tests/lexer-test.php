@@ -55,3 +55,35 @@ Test::create('should tokenize html tags with attributes', function(Test $test) {
         ]
     );
 });
+
+Test::create('should tokenize html entities', function(Test $test) {
+    $tokenizer = new Tokenizer;
+    $tokens = $tokenizer->tokenize("hello &nbsp;");
+    $test->equals(
+        $tokens,
+        [
+            ['type' => 'word', 'value' => 'hello'],
+            ['type' => 'whitespace', 'value' => ' '],
+            ['type' => 'html-entity', 'value' => '&nbsp;'],
+        ]
+    );
+});
+
+Test::create('should tokenize punctuation', function(Test $test) {
+    $tokenizer = new Tokenizer;
+    $tokens = $tokenizer->tokenize("a!b@c&d ;");
+    $test->equals(
+        $tokens,
+        [
+            ['type' => 'word', 'value' => 'a'],
+            ['type' => 'punctuation', 'value' => '!'],
+            ['type' => 'word', 'value' => 'b'],
+            ['type' => 'punctuation', 'value' => '@'],
+            ['type' => 'word', 'value' => 'c'],
+            ['type' => 'punctuation', 'value' => '&'],
+            ['type' => 'word', 'value' => 'd'],
+            ['type' => 'whitespace', 'value' => ' '],
+            ['type' => 'punctuation', 'value' => ';'],
+        ]
+    );
+});
