@@ -1,0 +1,52 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "This file is @generated automatically"
+    ],
+    "hash": "85a8c06c99df2962fbf48c9e45f0a4ee",
+    "content-hash": "fda468e7c448a68dd3afc68360308b5d",
+    "packages": [],
+    "packages-dev": [
+        {
+            "name": "zacharyrankin/just-test",
+            "version": "v0.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/zacharyrankin/just-test.git",
+                "reference": "d4051c1653286ac325eabe31dfb1858fac3ca161"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/zacharyrankin/just-test/zipball/d4051c1653286ac325eabe31dfb1858fac3ca161",
+                "reference": "d4051c1653286ac325eabe31dfb1858fac3ca161",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "zacharyrankin\\just_test\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Zachary Rankin",
+                    "email": "rankin.zachary@gmail.com"
+                }
+            ],
+            "description": "minimalistic tap-producing testing framework",
+            "time": "2015-08-05 23:04:09"
+        }
+    ],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": [],
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": [],
+    "platform-dev": []
+}

@@ -6,5 +6,12 @@
             "email": "rankin.zachary@gmail.com"
         }
     ],
-    "require": {}
+    "require-dev": {
+        "zacharyrankin/just-test": "^0.3.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "zacharyrankin\\wordhi\\": "src"
+        }
+    }
 }
