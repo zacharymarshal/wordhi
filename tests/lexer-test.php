@@ -87,3 +87,18 @@ Test::create('should tokenize punctuation', function(Test $test) {
         ]
     );
 });
+
+Test::create('should tokenize html with gt/lt signs', function(Test $test) {
+    $tokenizer = new Tokenizer;
+    $tokens = $tokenizer->tokenize("5 < 6");
+    $test->equals(
+        $tokens,
+        [
+            ['type' => 'word', 'value' => '5'],
+            ['type' => 'whitespace', 'value' => ' '],
+            ['type' => 'punctuation', 'value' => '<'],
+            ['type' => 'whitespace', 'value' => ' '],
+            ['type' => 'word', 'value' => '6'],
+        ]
+    );
+});
