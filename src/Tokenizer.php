@@ -8,7 +8,6 @@ class Tokenizer
     {
         $length = strlen($html);
         while ($length) {
-
             $token = $tokens[] = $this->getToken($html);
 
             $token_length = strlen($token['value']);
@@ -26,9 +25,12 @@ class Tokenizer
         if ($this->isSpace($first_char)) {
             $token_type = 'whitespace';
             $token_value = $this->getSpaces($string);
+        } elseif ($this->isHtml($first_char)) {
+            $token_type = 'html-tag';
+            $token_value = $this->getHtmlTag($string);
         } else {
             $token_type = 'word';
-            $token_value = $first_char;
+            $token_value = $this->getWord($string);
         }
 
         return [
@@ -52,5 +54,19 @@ class Tokenizer
     public function isHtml($string)
     {
         return (bool) preg_match("/</", $string);
+    }
+
+    public function getHtmlTag($string)
+    {
+        preg_match("/<.+?[\s]*\/?[\s]*>/", $string, $matches);
+
+        return $matches[0];
+    }
+
+    public function getWord($string)
+    {
+        preg_match("/^\w+/", $string, $matches);
+
+        return $matches[0];
     }
 }
