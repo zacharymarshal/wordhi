@@ -24,12 +24,12 @@ class Tokenizer
             return current($matches);
         };
         $token_patterns = [
-            "/^\s+/"                => ['type' => 'whitespace', 'value_fn' => $returnMatches],
-            "/^<.+?[\s]*\/?[\s]*>/" => ['type' => 'html-tag', 'value_fn' => $returnMatches],
-            "/^&[^\s]*;/"           => ['type' => 'html-entity', 'value_fn' => $returnMatches],
-            "/^[><\+\-!@#$%^&*();]/"  => ['type' => 'punctuation', 'value_fn' => $returnMatches],
-            "/^\w+/"                => ['type' => 'word', 'value_fn' => $returnMatches],
-            "/^./"                  => [
+            "/^\s+/"                   => ['type' => 'whitespace', 'value_fn' => $returnMatches],
+            "/^<[^<]+?[\s]*\/?[\s]*>/" => ['type' => 'html-tag', 'value_fn' => $returnMatches],
+            "/^&[^\s]*;/"              => ['type' => 'html-entity', 'value_fn' => $returnMatches],
+            "/^[><\+\-!@#$%^&*();]/"   => ['type' => 'punctuation', 'value_fn' => $returnMatches],
+            "/^\w+/"                   => ['type' => 'word', 'value_fn' => $returnMatches],
+            "/^./"                     => [
                 'type'     => 'unknown',
                 'value_fn' => function($matches, $string) {
                     return $string[0];

@@ -102,3 +102,20 @@ Test::create('should tokenize html with gt/lt signs', function(Test $test) {
         ]
     );
 });
+
+Test::create('should tokenize html with gt/lt signs and html', function(Test $test) {
+    $tokenizer = new Tokenizer;
+    $tokens = $tokenizer->tokenize("<p>5 < 6</p>");
+    $test->equals(
+        $tokens,
+        [
+            ['type' => 'html-tag', 'value' => '<p>'],
+            ['type' => 'word', 'value' => '5'],
+            ['type' => 'whitespace', 'value' => ' '],
+            ['type' => 'punctuation', 'value' => '<'],
+            ['type' => 'whitespace', 'value' => ' '],
+            ['type' => 'word', 'value' => '6'],
+            ['type' => 'html-tag', 'value' => '</p>'],
+        ]
+    );
+});
