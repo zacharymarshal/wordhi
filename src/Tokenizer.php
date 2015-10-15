@@ -25,7 +25,7 @@ class Tokenizer
         };
         $token_patterns = [
             "/^\s+/"                   => ['type' => 'whitespace', 'value_fn' => $returnMatches],
-            "/^<[^<]+?[\s]*\/?[\s]*>/" => [
+            "/^<.+?[\s]*\/?[\s]*>/" => [
                 'type' => 'html-tag',
                 'value_fn' => function($matches, $string) {
                     $matched = '';
@@ -37,6 +37,8 @@ class Tokenizer
                             $open_quote = $string[$i];
                         } elseif ($open_quote === $string[$i]) {
                             $open_quote = null;
+                        } elseif ($i > 0 && '<' === $string[$i] && null === $open_quote) {
+                            return false;
                         }
 
                         $matched .= $string[$i];
@@ -60,6 +62,10 @@ class Tokenizer
 
             if (!empty($matches)) {
                 $value = $token['value_fn']($matches, $string);
+
+                if (false === $value) {
+                    continue;
+                }
 
                 return [
                     'type'  => $token['type'],
