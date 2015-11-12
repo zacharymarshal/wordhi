@@ -56,13 +56,26 @@ Test::create('should tokenize html tags with attributes', function(Test $test) {
     );
 });
 
-Test::create('should tokenize html tags with less-than in attribute', function(Test $test) {
+Test::create('should tokenize html tags with greater-than in attribute', function(Test $test) {
     $tokenizer = new Tokenizer;
     $tokens = $tokenizer->tokenize("<acronym title=\"ouch >\">doh</acronym>");
     $test->equals(
         $tokens,
         [
             ['type' => 'html-tag', 'value' => "<acronym title=\"ouch >\">"],
+            ['type' => 'word', 'value' => 'doh'],
+            ['type' => 'html-tag', 'value' => '</acronym>'],
+        ]
+    );
+});
+
+Test::create('should tokenize html tags with less-than in attribute', function(Test $test) {
+    $tokenizer = new Tokenizer;
+    $tokens = $tokenizer->tokenize("<acronym title=\"ouch <\">doh</acronym>");
+    $test->equals(
+        $tokens,
+        [
+            ['type' => 'html-tag', 'value' => "<acronym title=\"ouch <\">"],
             ['type' => 'word', 'value' => 'doh'],
             ['type' => 'html-tag', 'value' => '</acronym>'],
         ]
