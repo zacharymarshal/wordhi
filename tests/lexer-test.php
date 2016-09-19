@@ -95,6 +95,22 @@ Test::create('should tokenize html entities', function(Test $test) {
     );
 });
 
+Test::create('should tokenize html entities with another semicolon on the line', function(Test $test) {
+    $tokenizer = new Tokenizer;
+    $tokens = $tokenizer->tokenize("hello &nbsp; another;");
+    $test->equals(
+        $tokens,
+        [
+            ['type' => 'word', 'value' => 'hello'],
+            ['type' => 'whitespace', 'value' => ' '],
+            ['type' => 'html-entity', 'value' => '&nbsp;'],
+            ['type' => 'whitespace', 'value' => ' '],
+            ['type' => 'word', 'value' => 'another'],
+            ['type' => 'punctuation', 'value' => ';'],
+        ]
+    );
+});
+
 Test::create('should tokenize punctuation', function(Test $test) {
     $tokenizer = new Tokenizer;
     $tokens = $tokenizer->tokenize("a!b@c&d ;");
@@ -141,6 +157,36 @@ Test::create('should tokenize html with gt/lt signs and html', function(Test $te
             ['type' => 'punctuation', 'value' => '<'],
             ['type' => 'whitespace', 'value' => ' '],
             ['type' => 'word', 'value' => '6'],
+            ['type' => 'html-tag', 'value' => '</p>'],
+        ]
+    );
+});
+
+Test::create('should tokenize html with html entities that have a hashtag', function(Test $test) {
+    $tokenizer = new Tokenizer;
+    $tokens = $tokenizer->tokenize("<p>testing &#8211;</p>");
+    $test->equals(
+        $tokens,
+        [
+            ['type' => 'html-tag', 'value' => '<p>'],
+            ['type' => 'word', 'value' => 'testing'],
+            ['type' => 'whitespace', 'value' => ' '],
+            ['type' => 'html-entity', 'value' => '&#8211;'],
+            ['type' => 'html-tag', 'value' => '</p>'],
+        ]
+    );
+});
+
+Test::create('should tokenize html with html entities that have a hashtag and another semicolon', function(Test $test) {
+    $tokenizer = new Tokenizer;
+    $tokens = $tokenizer->tokenize("<p>&#8211;evident;</p>");
+    $test->equals(
+        $tokens,
+        [
+            ['type' => 'html-tag', 'value' => '<p>'],
+            ['type' => 'html-entity', 'value' => '&#8211;'],
+            ['type' => 'word', 'value' => 'evident'],
+            ['type' => 'punctuation', 'value' => ';'],
             ['type' => 'html-tag', 'value' => '</p>'],
         ]
     );
