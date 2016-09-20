@@ -46,7 +46,7 @@ class Tokenizer
                     return $matched;
                 }
             ],
-            "/^&[^\s;]*;/"              => ['type' => 'html-entity', 'value_fn' => $returnMatches],
+            "/^&[^\s;]*;/"             => ['type' => 'html-entity', 'value_fn' => $returnMatches],
             "/^[><\+\-!@#$%^&*();]/"   => ['type' => 'punctuation', 'value_fn' => $returnMatches],
             "/^\w+/"                   => ['type' => 'word', 'value_fn' => $returnMatches],
             "/^./"                     => [
