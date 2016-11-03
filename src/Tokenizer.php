@@ -6,6 +6,8 @@ class Tokenizer
 {
     public function tokenize($html)
     {
+        $tokens = [];
+
         $length = strlen($html);
         while ($length) {
             $token = $tokens[] = $this->getToken($html);
