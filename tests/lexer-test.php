@@ -5,6 +5,15 @@ use zacharyrankin\wordhi\Tokenizer;
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
+Test::create('should return an empty array for no value', function(Test $test) {
+    $tokenizer = new Tokenizer;
+    $tokens = $tokenizer->tokenize("");
+    $test->equals(
+        $tokens,
+        []
+    );
+});
+
 Test::create('should tokenize whitespace before word', function(Test $test) {
     $tokenizer = new Tokenizer;
     $tokens = $tokenizer->tokenize("    a");
