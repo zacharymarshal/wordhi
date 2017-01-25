@@ -200,3 +200,21 @@ Test::create('should tokenize html with html entities that have a hashtag and an
         ]
     );
 });
+
+Test::create('should tokenize special chars', function(Test $test) {
+    $tokenizer = new Tokenizer;
+    $tokens = $tokenizer->tokenize("“x = −4”");
+    $test->equals(
+        $tokens,
+        [
+            ['type' => 'special-char', 'value' => '“'],
+            ['type' => 'word', 'value' => 'x'],
+            ['type' => 'whitespace', 'value' => ' '],
+            ['type' => 'punctuation', 'value' => '='],
+            ['type' => 'whitespace', 'value' => ' '],
+            ['type' => 'special-char', 'value' => '−'],
+            ['type' => 'word', 'value' => '4'],
+            ['type' => 'special-char', 'value' => '”'],
+        ]
+    );
+});
