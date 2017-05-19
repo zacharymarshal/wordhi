@@ -218,3 +218,62 @@ Test::create('should tokenize special chars', function(Test $test) {
         ]
     );
 });
+
+Test::create('should tokenize crazy ass images', function (Test $test) {
+    $img_html = file_get_contents(__DIR__ . '/large_image.html');
+    $tokenizer = new Tokenizer;
+    $test->equals($tokenizer->tokenize($img_html), [
+        ['type' => 'html-tag', 'value' => trim($img_html)],
+        ['type' => 'whitespace', 'value' => "\n"],
+    ]);
+});
+
+Test::create('should tokenize multiple tags', function(Test $test) {
+    $tokenizer = new Tokenizer;
+    $tokens = $tokenizer->tokenize("<br><br /><p>test</p>");
+    $test->equals(
+        $tokens,
+        [
+            ['type' => 'html-tag', 'value' => '<br>'],
+            ['type' => 'html-tag', 'value' => '<br />'],
+            ['type' => 'html-tag', 'value' => '<p>'],
+            ['type' => 'word', 'value' => 'test'],
+            ['type' => 'html-tag', 'value' => '</p>'],
+        ]
+    );
+});
+
+Test::create('should tokenize spaces before/after tag', function(Test $test) {
+    $tokenizer = new Tokenizer;
+    $tokens = $tokenizer->tokenize("< br ><br / >< hr style='color: blue' >");
+    $test->equals(
+        $tokens,
+        [
+            ['type' => 'html-tag', 'value' => '< br >'],
+            ['type' => 'html-tag', 'value' => '<br / >'],
+            ['type' => 'html-tag', 'value' => '< hr style=\'color: blue\' >'],
+        ]
+    );
+});
+
+Test::create('should tokenize gt/lt in attributes', function(Test $test) {
+    $tokenizer = new Tokenizer;
+    $tokens = $tokenizer->tokenize("<hr style='color: >blue'>");
+    $test->equals($tokens, [
+        ['type' => 'html-tag', 'value' => '<hr style=\'color: >blue\'>'],
+    ]);
+});
+
+Test::create('nested html', function(Test $test) {
+    $tokenizer = new Tokenizer;
+    $tokens = $tokenizer->tokenize("<p><hr/><img/></p>");
+    $test->equals(
+        $tokens,
+        [
+            ['type' => 'html-tag', 'value' => '<p>'],
+            ['type' => 'html-tag', 'value' => '<hr/>'],
+            ['type' => 'html-tag', 'value' => '<img/>'],
+            ['type' => 'html-tag', 'value' => '</p>'],
+        ]
+    );
+});

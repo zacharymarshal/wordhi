@@ -27,7 +27,7 @@ class Tokenizer
         };
         $token_patterns = [
             "/^\s+/"                   => ['type' => 'whitespace', 'value_fn' => $returnMatches],
-            "/^<.+?[\s]*\/?[\s]*>/" => [
+            "/^<.+>/" => [
                 'type' => 'html-tag',
                 'value_fn' => function($matches, $string) {
                     $matched = '';
